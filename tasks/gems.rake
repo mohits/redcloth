@@ -33,7 +33,7 @@ namespace :build do
       :clobber,
       "rvm:spec",
       :jruby,
-      :win,
+      #:win,
       :build
     ]
 end
