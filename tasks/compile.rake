@@ -17,6 +17,7 @@ def gemspec(platform = 'ruby')
 end
 
 require 'rake/extensiontask'
+require 'rake/javaextensiontask'
 require File.dirname(__FILE__) + '/ragel_extension_task'
 
 

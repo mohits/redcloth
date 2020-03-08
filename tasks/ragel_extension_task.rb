@@ -42,14 +42,17 @@ module Rake
       {
         'scan' => {
           'c'    => "#{@ext_dir}/redcloth_scan.c",
+          'java' => "#{@ext_dir}/RedclothScanService.java",
           'rb'   => "#{@ext_dir}/redcloth_scan.rb"
         },
         'inline' => {
           'c'    => "#{@ext_dir}/redcloth_inline.c",
+          'java' => "#{@ext_dir}/RedclothInline.java",
           'rb'   => "#{@ext_dir}/redcloth_inline.rb"
         },
         'attributes' => {
           'c'    => "#{@ext_dir}/redcloth_attributes.c",
+          'java' => "#{@ext_dir}/RedclothAttributes.java",
           'rb'   => "#{@ext_dir}/redcloth_attributes.rb"
         }
       }[machine][lang]
@@ -85,6 +88,7 @@ module Rake
     def host_language_flag
       {
         'c'      => 'C',
+        'java'   => 'J',
         'rb'     => 'R'
       }[lang]
     end
@@ -92,6 +96,7 @@ module Rake
     def preferred_code_style
       {
         'c'      => 'T0',
+        'java'   => nil,
         'rb'     => 'F1'
       }[lang]
     end
@@ -112,5 +117,11 @@ module Rake
       "c"
     end
   end  
-  
+  class JavaRagelExtensionTask < JavaExtensionTask
+    include RagelGenerationTasks
+    
+    def lang
+      "java"
+    end
+  end  
 end
