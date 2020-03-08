@@ -2,7 +2,8 @@ require 'rvm'
 
 namespace :rvm do
   
-  RVM_RUBIES = ['ruby-1.8.6-p398', 'ruby-1.9.1-p243', 'ruby-1.9.2-p136', 'ruby-2.2.3p173']
+  #RVM_RUBIES = ['ruby-1.8.6-p398', 'ruby-1.9.1-p243', 'ruby-1.9.2-p136', 'ruby-2.2.3p173']
+  RVM_RUBIES = ['jruby-9.2.11.0']
   RVM_GEMSET_NAME = 'redcloth'
   
   task :setup do
@@ -78,4 +79,3 @@ end
 def rvm_rubies(options={})
   RVM_RUBIES.map{ |rubie| "#{rubie}@#{RVM_GEMSET_NAME}" }
 end
-

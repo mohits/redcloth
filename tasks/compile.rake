@@ -12,7 +12,8 @@ CLOBBER.include [
 ]
 
 # Load the Gem specification for the current platform (Ruby or JRuby).
-def gemspec(platform = 'ruby')
+#def gemspec(platform = 'ruby')
+def gemspec(platform = RUBY_PLATFORM[/java/] || 'ruby')
   Gem::Specification.load(File.expand_path('../../redcloth.gemspec', __FILE__))
 end
 
@@ -20,12 +21,14 @@ require 'rake/extensiontask'
 require 'rake/javaextensiontask'
 require File.dirname(__FILE__) + '/ragel_extension_task'
 
-
-extconf = "ext/redcloth_scan/extconf.rb"
-file extconf do
-    FileUtils.mkdir(File.dirname(extconf)) unless File.directory?(File.dirname(extconf))
-    File.open(extconf, "w") do |io|
-      io.write(<<-EOF)
+if defined?(JRUBY_VERSION)
+  Rake::JavaRagelExtensionTask.new('redcloth_scan', gemspec)
+else
+  extconf = "ext/redcloth_scan/extconf.rb"
+  file extconf do
+      FileUtils.mkdir(File.dirname(extconf)) unless File.directory?(File.dirname(extconf))
+      File.open(extconf, "w") do |io|
+        io.write(<<-EOF)
 require 'mkmf'
 CONFIG['warnflags'].gsub!(/-Wshorten-64-to-32/, '') if CONFIG['warnflags']
 $CFLAGS << ' -O0 -Wall ' if CONFIG['CC'] =~ /gcc/
@@ -33,8 +36,10 @@ dir_config("redcloth_scan")
 have_library("c", "main")
 create_makefile("redcloth_scan")
       EOF
-    end
-end
+      end
+  end
 
-Rake::RagelExtensionTask.new("redcloth_scan", gemspec) do |ext|
+  Rake::RagelExtensionTask.new("redcloth_scan", gemspec) do |ext|
+  # leaving this blank since I think maybe we support Ruby > 2.4 on Windows
+  end
 end
